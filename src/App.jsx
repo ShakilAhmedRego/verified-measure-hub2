@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
-/* ===============================
-   SVG Components (unchanged)
-================================ */
+// SVG Components for Visual Elements
 const DataGridSVG = () => (
   <svg className="absolute inset-0 w-full h-full opacity-40" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -21,12 +19,13 @@ const DataNodesSVG = () => (
     <circle cx="45%" cy="65%" r="3" fill="#1e4fc7" opacity="0.15" />
     <circle cx="70%" cy="80%" r="3" fill="#1e4fc7" opacity="0.15" />
     <circle cx="30%" cy="50%" r="3" fill="#1e4fc7" opacity="0.15" />
+    <line x1="15%" y1="25%" x2="30%" y2="50%" stroke="#1e4fc7" strokeWidth="0.5" opacity="0.1" />
+    <line x1="30%" y1="50%" x2="45%" y2="65%" stroke="#1e4fc7" strokeWidth="0.5" opacity="0.1" />
+    <line x1="45%" y1="65%" x2="70%" y2="80%" stroke="#1e4fc7" strokeWidth="0.5" opacity="0.1" />
+    <line x1="85%" y1="35%" x2="70%" y2="80%" stroke="#1e4fc7" strokeWidth="0.5" opacity="0.1" />
   </svg>
 );
 
-/* ===============================
-   App
-================================ */
 export default function VerifiedMeasure() {
   const [activeTab, setActiveTab] = useState('home');
 
@@ -43,47 +42,57 @@ export default function VerifiedMeasure() {
     <div className="min-h-screen bg-[#FCFCFD] overflow-x-hidden">
       <div className="fixed inset-0 infra-grid pointer-events-none opacity-30" />
 
-      {/* Header */}
       <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-[#C4C8CE]/60">
         <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 h-20 sm:h-24 flex items-center justify-between">
+          {/* Logo */}
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#1e4fc7] to-[#1a45b3] rounded-xl flex items-center justify-center">
-              <span className="font-['IBM_Plex_Mono'] font-bold text-white">VM</span>
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#1e4fc7] via-[#1a45b3] to-[#1e4fc7] rounded-xl flex items-center justify-center shadow-lg shadow-[#1e4fc7]/20">
+                <span className="font-['IBM_Plex_Mono'] font-bold text-white text-base">VM</span>
+              </div>
+              <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-[#1e4fc7] rounded-full sys-pulse border-2 border-white" />
             </div>
             <div>
-              <div className="text-xl font-bold text-[#0D0F16]">VerifiedMeasure</div>
-              <div className="text-[10px] font-['IBM_Plex_Mono'] text-[#3C414B] uppercase tracking-[0.1em]">
+              <div className="text-2xl font-bold text-[#0D0F16] tracking-tight leading-none">VerifiedMeasure</div>
+              <div className="text-[10px] font-['IBM_Plex_Mono'] text-[#3C414B] uppercase tracking-[0.1em] mt-0.5">
                 DATA INFRASTRUCTURE
               </div>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-10">
+          {/* Navigation */}
+          <div className="flex items-center gap-12">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`text-sm font-medium ${
-                  activeTab === tab.id ? 'text-[#1e4fc7]' : 'text-[#3C414B]'
+                className={`relative font-medium text-[15px] transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? 'text-[#1e4fc7]'
+                    : 'text-[#3C414B] hover:text-[#1e4fc7]'
                 }`}
               >
                 {tab.label}
+                {activeTab === tab.id && (
+                  <div className="absolute -bottom-6 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#1e4fc7] to-transparent" />
+                )}
               </button>
             ))}
+
             <a
               href="https://verifiedmeasure-daas-v2.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-[#1e4fc7] text-white rounded-xl font-semibold"
+              className="relative group px-8 py-3.5 bg-[#1e4fc7] text-white font-semibold text-[15px] rounded-xl overflow-hidden shadow-lg shadow-[#1e4fc7]/25 hover:shadow-xl hover:shadow-[#1e4fc7]/30 transition-all"
             >
-              Login
+              <span className="relative z-10">Login</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1a45b3] to-[#1e4fc7] opacity-0 group-hover:opacity-100 transition-opacity" />
             </a>
           </div>
         </nav>
       </header>
 
-      {/* Content */}
-      <main>
+      <main className="relative">
         {activeTab === 'home' && <HomeTab />}
         {activeTab === 'platform' && <PlatformTab />}
         {activeTab === 'databases' && <DatabasesTab />}
@@ -92,51 +101,27 @@ export default function VerifiedMeasure() {
         {activeTab === 'contact' && <ContactTab />}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#0D0F16] mt-32">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 text-[#7D8492] text-sm">
-          © 2024 VerifiedMeasure. All rights reserved.
+      <footer className="relative mt-40 bg-[#0D0F16] border-t border-[#1e4fc7]/30 overflow-hidden">
+        <DataNodesSVG />
+        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-[#1e4fc7]/15 border border-[#1e4fc7]/30 rounded-lg flex items-center justify-center">
+                <span className="font-['IBM_Plex_Mono'] font-bold text-[#1e4fc7] text-sm">VM</span>
+              </div>
+              <div className="text-sm text-[#7D8492] font-['IBM_Plex_Mono']">
+                &copy; 2024 VerifiedMeasure. All rights reserved.
+              </div>
+            </div>
+            <div className="flex items-center gap-3 px-4 py-2 bg-[#1e4fc7]/10 border border-[#1e4fc7]/30 rounded-lg">
+              <div className="w-2.5 h-2.5 bg-[#1e4fc7] rounded-full sys-pulse" />
+              <span className="text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-wider">
+                Systems Operational
+              </span>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
   );
 }
-
-/* ===============================
-   TABS (content unchanged)
-   ONLY container padding fixed
-================================ */
-
-function Section({ children }) {
-  return (
-    <section className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
-      {children}
-    </section>
-  );
-}
-
-function HomeTab() {
-  return (
-    <section className="py-24 border-b border-[#C4C8CE]/40">
-      <Section>
-        <h1 className="text-[44px] sm:text-[64px] lg:text-[88px] font-bold leading-tight mb-6">
-          VerifiedMeasure
-        </h1>
-        <p className="text-xl sm:text-2xl lg:text-[38px] font-semibold text-[#1e4fc7] mb-8">
-          Personal Database That Works For You
-        </p>
-        <p className="text-lg max-w-3xl text-[#3C414B]">
-          VerifiedMeasure designs and operates secure data environments used to evaluate,
-          access, and monetize sensitive datasets—without leakage, misuse, or billing ambiguity.
-        </p>
-      </Section>
-    </section>
-  );
-}
-
-/* Remaining tabs unchanged structurally — containers fixed */
-function PlatformTab() { return <Section><h1>Platform</h1></Section>; }
-function DatabasesTab() { return <Section><h1>Databases</h1></Section>; }
-function SecurityTab() { return <Section><h1>Security</h1></Section>; }
-function AboutTab() { return <Section><h1>About</h1></Section>; }
-function ContactTab() { return <Section><h1>Contact</h1></Section>; }
