@@ -1,7 +1,3 @@
-add it to the code 
-
-again stop telling me to fix the code, where you see the problem fix it 
-
 // src/App.jsx
 
 import React, { useState } from 'react';
