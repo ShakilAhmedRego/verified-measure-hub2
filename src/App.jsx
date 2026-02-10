@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import React, { useState } from 'react';
 
 // SVG Components for Visual Elements
@@ -30,6 +28,7 @@ const DataNodesSVG = () => (
 
 export default function VerifiedMeasure() {
   const [activeTab, setActiveTab] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const tabs = [
     { id: 'home', label: 'Home' },
@@ -40,63 +39,110 @@ export default function VerifiedMeasure() {
     { id: 'contact', label: 'Contact' }
   ];
 
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen bg-[#FCFCFD] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FCFCFD]">
       {/* Global Infrastructure Grid */}
       <div className="fixed inset-0 infra-grid pointer-events-none opacity-30" />
-
+      
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-[#C4C8CE]/60">
-        <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 h-20 sm:h-24 flex items-center justify-between">
+        <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 h-20 lg:h-24 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 lg:gap-4">
             <div className="relative">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#1e4fc7] via-[#1a45b3] to-[#1e4fc7] rounded-xl flex items-center justify-center shadow-lg shadow-[#1e4fc7]/20">
-                <span className="font-['IBM_Plex_Mono'] font-bold text-white text-sm sm:text-base">VM</span>
+              <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-[#1e4fc7] via-[#1a45b3] to-[#1e4fc7] rounded-xl flex items-center justify-center shadow-lg shadow-[#1e4fc7]/20">
+                <span className="font-['IBM_Plex_Mono'] font-bold text-white text-sm lg:text-base">VM</span>
               </div>
-              <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-[#1e4fc7] rounded-full sys-pulse border-2 border-white" />
+              <div className="absolute -top-0.5 -right-0.5 w-3 h-3 lg:w-3.5 lg:h-3.5 bg-[#1e4fc7] rounded-full sys-pulse border-2 border-white" />
             </div>
             <div>
-              <div className="text-xl sm:text-2xl font-bold text-[#0D0F16] tracking-tight leading-none">VerifiedMeasure</div>
-              <div className="text-[9px] sm:text-[10px] font-['IBM_Plex_Mono'] text-[#3C414B] uppercase tracking-[0.1em] mt-0.5">
+              <div className="text-lg lg:text-2xl font-bold text-[#0D0F16] tracking-tight leading-none">VerifiedMeasure</div>
+              <div className="text-[8px] lg:text-[10px] font-['IBM_Plex_Mono'] text-[#3C414B] uppercase tracking-[0.1em] mt-0.5">
                 DATA INFRASTRUCTURE
               </div>
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <div className="flex items-center gap-3 sm:gap-8 lg:gap-12 min-w-0">
-            <div className="flex items-center gap-3 sm:gap-6 lg:gap-12 overflow-x-auto whitespace-nowrap [-webkit-overflow-scrolling:touch] no-scrollbar max-w-[60vw] sm:max-w-none">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`relative font-medium text-[14px] sm:text-[15px] transition-all duration-200 flex-shrink-0 ${
-                    activeTab === tab.id
-                      ? 'text-[#1e4fc7]'
-                      : 'text-[#3C414B] hover:text-[#1e4fc7]'
-                  }`}
-                >
-                  {tab.label}
-                  {activeTab === tab.id && (
-                    <div className="absolute -bottom-5 sm:-bottom-6 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#1e4fc7] to-transparent" />
-                  )}
-                </button>
-              ))}
-            </div>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 text-[#3C414B] hover:text-[#1e4fc7] transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
 
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center gap-12">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabClick(tab.id)}
+                className={`relative font-medium text-[15px] transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? 'text-[#1e4fc7]'
+                    : 'text-[#3C414B] hover:text-[#1e4fc7]'
+                }`}
+              >
+                {tab.label}
+                {activeTab === tab.id && (
+                  <div className="absolute -bottom-6 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#1e4fc7] to-transparent" />
+                )}
+              </button>
+            ))}
+            
             {/* Login CTA */}
             <a
               href="https://verifiedmeasure-daas-v2.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative group px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 bg-[#1e4fc7] text-white font-semibold text-[14px] sm:text-[15px] rounded-xl overflow-hidden shadow-lg shadow-[#1e4fc7]/25 hover:shadow-xl hover:shadow-[#1e4fc7]/30 transition-all flex-shrink-0"
+              className="relative group px-8 py-3.5 bg-[#1e4fc7] text-white font-semibold text-[15px] rounded-xl overflow-hidden shadow-lg shadow-[#1e4fc7]/25 hover:shadow-xl hover:shadow-[#1e4fc7]/30 transition-all"
             >
               <span className="relative z-10">Login</span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#1a45b3] to-[#1e4fc7] opacity-0 group-hover:opacity-100 transition-opacity" />
             </a>
           </div>
         </nav>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-[#C4C8CE]/60 bg-white">
+            <div className="px-4 py-4 space-y-2">
+              {tabs.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-[#1e4fc7]/10 text-[#1e4fc7]'
+                      : 'text-[#3C414B] hover:bg-gray-50'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+              <a
+                href="https://verifiedmeasure-daas-v2.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full mt-4 px-6 py-3 bg-[#1e4fc7] text-white font-semibold text-center rounded-xl shadow-lg"
+              >
+                Login
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Page Content */}
@@ -110,10 +156,10 @@ export default function VerifiedMeasure() {
       </main>
 
       {/* Footer */}
-      <footer className="relative mt-24 sm:mt-40 bg-[#0D0F16] border-t border-[#1e4fc7]/30 overflow-hidden">
+      <footer className="relative mt-24 lg:mt-40 bg-[#0D0F16] border-t border-[#1e4fc7]/30 overflow-hidden">
         <DataNodesSVG />
-        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-16">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-12 lg:py-16">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-[#1e4fc7]/15 border border-[#1e4fc7]/30 rounded-lg flex items-center justify-center">
                 <span className="font-['IBM_Plex_Mono'] font-bold text-[#1e4fc7] text-sm">VM</span>
@@ -139,46 +185,46 @@ function HomeTab() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-b from-white via-[#FAFBFC] to-white border-b border-[#C4C8CE]/40 overflow-hidden">
         <DataNodesSVG />
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] max-w-full bg-gradient-radial from-[#1e4fc7]/8 to-transparent blur-3xl" />
-
-        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 sm:pt-24 lg:pt-32 pb-16 sm:pb-28 lg:pb-40">
+        <div className="absolute top-0 right-0 w-[400px] lg:w-[800px] h-[400px] lg:h-[800px] bg-gradient-radial from-[#1e4fc7]/8 to-transparent blur-3xl" />
+        
+        <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 sm:pt-24 lg:pt-32 pb-20 sm:pb-32 lg:pb-40">
           <div className="max-w-5xl">
             {/* Status Badge */}
-            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/25 rounded-full mb-8 sm:mb-10">
-              <div className="w-2.5 h-2.5 bg-[#1e4fc7] rounded-full sys-pulse" />
-              <span className="text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] font-semibold">
+            <div className="inline-flex items-center gap-2 lg:gap-2.5 px-4 lg:px-5 py-2 lg:py-2.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/25 rounded-full mb-6 lg:mb-10">
+              <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-[#1e4fc7] rounded-full sys-pulse" />
+              <span className="text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] font-semibold">
                 Infrastructure Online
               </span>
             </div>
-
+            
             {/* Main Heading */}
-            <h1 className="text-[44px] sm:text-[64px] lg:text-[88px] font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-[-0.02em] leading-[0.98] lg:leading-[0.95]">
+            <h1 className="text-5xl sm:text-6xl lg:text-[88px] font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-[-0.02em] leading-[0.95]">
               VerifiedMeasure
             </h1>
-
+            
             {/* Tagline */}
-            <p className="text-[22px] sm:text-[30px] lg:text-[38px] font-semibold text-[#1e4fc7] mb-8 sm:mb-10 tracking-tight leading-tight">
+            <p className="text-2xl sm:text-3xl lg:text-[38px] font-semibold text-[#1e4fc7] mb-6 lg:mb-10 tracking-tight leading-tight">
               Personal Database That Works For You
             </p>
-
+            
             {/* Description */}
-            <p className="text-base sm:text-lg lg:text-xl text-[#3C414B] leading-relaxed max-w-4xl mb-10 sm:mb-16">
+            <p className="text-base sm:text-lg lg:text-xl text-[#3C414B] leading-relaxed max-w-4xl mb-10 lg:mb-16">
               VerifiedMeasure designs and operates secure data environments used to evaluate, access, and monetize sensitive datasets—without leakage, misuse, or billing ambiguity.
             </p>
-
+            
             {/* Live Metrics Bar */}
-            <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 pt-8 sm:pt-10 border-t border-[#C4C8CE]/50">
+            <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 lg:gap-12 pt-6 lg:pt-10 border-t border-[#C4C8CE]/50">
               {[
                 { label: 'Uptime', value: '99.99', unit: '%' },
                 { label: 'Throughput', value: '10K+', unit: 'queries/sec' },
                 { label: 'Latency', value: '<50', unit: 'ms' }
               ].map((metric, idx) => (
-                <div key={idx} className="flex items-baseline gap-3">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl sm:text-4xl font-['IBM_Plex_Mono'] font-bold text-[#1e4fc7] metric-emphasis">
+                <div key={idx} className="flex items-baseline gap-2 lg:gap-3">
+                  <div className="flex items-baseline gap-1 lg:gap-1.5">
+                    <span className="text-3xl lg:text-4xl font-['IBM_Plex_Mono'] font-bold text-[#1e4fc7] metric-emphasis">
                       {metric.value}
                     </span>
-                    <span className="text-base sm:text-lg font-['IBM_Plex_Mono'] text-[#3C414B] font-medium">
+                    <span className="text-sm lg:text-lg font-['IBM_Plex_Mono'] text-[#3C414B] font-medium">
                       {metric.unit}
                     </span>
                   </div>
@@ -195,18 +241,18 @@ function HomeTab() {
       {/* Infrastructure Content */}
       <section className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
         {/* Section Label */}
-        <div className="inline-block px-4 py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-8 sm:mb-10 font-semibold">
+        <div className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-6 lg:mb-10 font-semibold">
           Core Infrastructure
         </div>
-
+        
         {/* Heading */}
-        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-tight max-w-5xl leading-tight">
+        <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-tight max-w-5xl leading-tight">
           Validation Infrastructure for Capital Markets Operations
         </h2>
-
+        
         {/* Body Content */}
-        <div className="max-w-5xl space-y-6 mb-12 sm:mb-20">
-          <p className="text-lg sm:text-2xl text-[#3C414B] leading-relaxed">
+        <div className="max-w-5xl space-y-4 lg:space-y-6 mb-12 lg:mb-20">
+          <p className="text-lg sm:text-xl lg:text-2xl text-[#3C414B] leading-relaxed">
             Capital markets and data-driven organizations depend on accurate, traceable, and governed datasets.
           </p>
           <p className="text-base sm:text-lg text-[#3C414B] leading-relaxed">
@@ -215,7 +261,7 @@ function HomeTab() {
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {[
             {
               metric: '100%',
@@ -240,12 +286,12 @@ function HomeTab() {
             }
           ].map((stat, idx) => (
             <div key={idx} className="group relative">
-              <div className="card-enterprise bg-white rounded-3xl p-8 sm:p-12 h-full relative overflow-hidden">
+              <div className="card-enterprise bg-white rounded-2xl lg:rounded-3xl p-8 lg:p-12 h-full relative overflow-hidden">
                 {/* Pattern Background */}
                 {stat.pattern === 'audit' && (
                   <div className="absolute inset-0 opacity-[0.03]">
                     {[...Array(12)].map((_, i) => (
-                      <div key={i} className="absolute left-8 right-8 border-b border-[#1e4fc7]"
+                      <div key={i} className="absolute left-8 right-8 border-b border-[#1e4fc7]" 
                            style={{ top: `${(i + 1) * 8}%` }} />
                     ))}
                   </div>
@@ -256,23 +302,23 @@ function HomeTab() {
                 {stat.pattern === 'trace' && (
                   <div className="absolute inset-0 infra-grid opacity-40" />
                 )}
-
+                
                 {/* Content */}
                 <div className="relative">
-                  <div className="text-6xl mb-6">{stat.icon}</div>
-                  <div className="text-6xl sm:text-7xl font-['IBM_Plex_Mono'] font-bold text-[#1e4fc7] mb-4 metric-emphasis tracking-tight">
+                  <div className="text-5xl lg:text-6xl mb-4 lg:mb-6">{stat.icon}</div>
+                  <div className="text-5xl lg:text-7xl font-['IBM_Plex_Mono'] font-bold text-[#1e4fc7] mb-3 lg:mb-4 metric-emphasis tracking-tight">
                     {stat.metric}
                   </div>
-                  <div className="text-base font-bold text-[#0D0F16] uppercase tracking-[0.08em] mb-3">
+                  <div className="text-sm lg:text-base font-bold text-[#0D0F16] uppercase tracking-[0.08em] mb-2 lg:mb-3">
                     {stat.label}
                   </div>
-                  <div className="text-sm font-['IBM_Plex_Mono'] text-[#3C414B]">
+                  <div className="text-xs lg:text-sm font-['IBM_Plex_Mono'] text-[#3C414B]">
                     {stat.detail}
                   </div>
                 </div>
-
+                
                 {/* Accent Bar */}
-                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1e4fc7] via-[#1e4fc7]/80 to-transparent transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-1 lg:h-1.5 bg-gradient-to-r from-[#1e4fc7] via-[#1e4fc7]/80 to-transparent transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               </div>
             </div>
           ))}
@@ -289,10 +335,10 @@ function PlatformTab() {
       <section className="relative bg-gradient-to-b from-white to-[#FAFBFC] border-b border-[#C4C8CE]/40">
         <DataNodesSVG />
         <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-          <div className="inline-block px-4 py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-8 sm:mb-10 font-semibold">
+          <div className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-6 lg:mb-10 font-semibold">
             Control Plane
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-tight">
             The VerifiedMeasure Platform
           </h1>
           <p className="text-xl sm:text-2xl lg:text-3xl text-[#3C414B] max-w-4xl leading-relaxed">
@@ -303,9 +349,9 @@ function PlatformTab() {
 
       {/* Design Principles */}
       <section className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-        <h3 className="text-3xl sm:text-4xl font-bold text-[#0D0F16] mb-10 sm:mb-14 tracking-tight">Platform Design Principles</h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0D0F16] mb-8 lg:mb-14 tracking-tight">Platform Design Principles</h3>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5">
           {[
             { principle: 'Database-level security (RLS)', icon: '🔒' },
             { principle: 'Explicit entitlement over implied access', icon: '🔑' },
@@ -314,9 +360,9 @@ function PlatformTab() {
             { principle: 'Full auditability', icon: '📊' }
           ].map((item, idx) => (
             <div key={idx} className="group">
-              <div className="card-enterprise bg-white rounded-2xl p-8 h-full relative">
-                <div className="text-4xl mb-6">{item.icon}</div>
-                <div className="font-['IBM_Plex_Mono'] text-[15px] text-[#3C414B] leading-relaxed">
+              <div className="card-enterprise bg-white rounded-xl lg:rounded-2xl p-6 lg:p-8 h-full relative">
+                <div className="text-3xl lg:text-4xl mb-4 lg:mb-6">{item.icon}</div>
+                <div className="font-['IBM_Plex_Mono'] text-sm lg:text-[15px] text-[#3C414B] leading-relaxed">
                   {item.principle}
                 </div>
                 <div className="absolute top-3 right-3 w-2 h-2 bg-[#1e4fc7] rounded-full sys-pulse opacity-0 group-hover:opacity-100" />
@@ -328,10 +374,10 @@ function PlatformTab() {
 
       {/* Control Plane Components */}
       <section className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 pb-16 sm:pb-24 lg:pb-32">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-6 tracking-tight">Platform Control Plane</h2>
-        <p className="text-base sm:text-xl text-[#3C414B] mb-10 sm:mb-16">Backend infrastructure components</p>
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-4 lg:mb-6 tracking-tight">Platform Control Plane</h2>
+        <p className="text-lg sm:text-xl text-[#3C414B] mb-10 lg:mb-16">Backend infrastructure components</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           <ControlPlaneCard
             icon="🔑"
             title="Entitlements"
@@ -365,7 +411,7 @@ function PlatformTab() {
 function ControlPlaneCard({ icon, title, content, visual }) {
   return (
     <div className="group relative">
-      <div className="card-enterprise bg-white rounded-3xl p-8 sm:p-12 h-full overflow-hidden">
+      <div className="card-enterprise bg-white rounded-2xl lg:rounded-3xl p-8 lg:p-12 h-full overflow-hidden">
         {/* Visual Pattern */}
         {visual === 'circles' && (
           <svg className="absolute inset-0 w-full h-full opacity-[0.04]" viewBox="0 0 200 200">
@@ -377,7 +423,7 @@ function ControlPlaneCard({ icon, title, content, visual }) {
         {visual === 'ledger' && (
           <div className="absolute inset-0 opacity-[0.04]">
             {[...Array(10)].map((_, i) => (
-              <div key={i} className="absolute left-8 right-8 border-b border-[#1e4fc7]"
+              <div key={i} className="absolute left-8 right-8 border-b border-[#1e4fc7]" 
                    style={{ top: `${(i + 1) * 10}%` }} />
             ))}
           </div>
@@ -390,21 +436,21 @@ function ControlPlaneCard({ icon, title, content, visual }) {
             <div className="absolute inset-12 border-2 border-dashed border-[#1e4fc7] rounded-2xl" />
           </div>
         )}
-
+        
         {/* Content */}
         <div className="relative">
-          <div className="flex items-start gap-5 mb-8">
-            <div className="w-16 h-16 bg-[#1e4fc7]/10 border border-[#1e4fc7]/25 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0">
+          <div className="flex items-start gap-4 lg:gap-5 mb-6 lg:mb-8">
+            <div className="w-14 h-14 lg:w-16 lg:h-16 bg-[#1e4fc7]/10 border border-[#1e4fc7]/25 rounded-xl lg:rounded-2xl flex items-center justify-center text-2xl lg:text-3xl flex-shrink-0">
               {icon}
             </div>
             <div>
-              <h4 className="text-2xl font-bold text-[#0D0F16] mb-1.5">{title}</h4>
-              <div className="text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em]">
+              <h4 className="text-xl lg:text-2xl font-bold text-[#0D0F16] mb-1 lg:mb-1.5">{title}</h4>
+              <div className="text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em]">
                 Core Component
               </div>
             </div>
           </div>
-          <p className="text-base text-[#3C414B] leading-relaxed">{content}</p>
+          <p className="text-sm lg:text-base text-[#3C414B] leading-relaxed">{content}</p>
         </div>
       </div>
     </div>
@@ -418,10 +464,10 @@ function DatabasesTab() {
       <section className="relative bg-gradient-to-b from-white to-[#FAFBFC] border-b border-[#C4C8CE]/40">
         <DataNodesSVG />
         <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-          <div className="inline-block px-4 py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-8 sm:mb-10 font-semibold">
+          <div className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-6 lg:mb-10 font-semibold">
             Data Access
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-tight">Databases</h1>
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-tight">Databases</h1>
           <p className="text-xl sm:text-2xl lg:text-3xl text-[#3C414B] max-w-4xl leading-relaxed">
             Secure, governed access to validated datasets
           </p>
@@ -430,9 +476,9 @@ function DatabasesTab() {
 
       {/* Access Model */}
       <section className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-10 sm:mb-16 tracking-tight">Dataset Access Model</h2>
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-10 lg:mb-16 tracking-tight">Dataset Access Model</h2>
 
-        <div className="space-y-8">
+        <div className="space-y-6 lg:space-y-8">
           <AccessTier
             title="Preview Access"
             description="Authenticated users may preview schema, metadata, and limited sample rows. Preview does not imply ownership and does not consume credits."
@@ -460,28 +506,28 @@ function DatabasesTab() {
 function AccessTier({ title, description, level, icon }) {
   return (
     <div className="group">
-      <div className="card-enterprise bg-white rounded-3xl p-8 sm:p-12">
-        <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
+      <div className="card-enterprise bg-white rounded-2xl lg:rounded-3xl p-8 lg:p-12">
+        <div className="flex flex-col sm:flex-row items-start gap-6 lg:gap-8">
           {/* Icon */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-3xl flex items-center justify-center text-4xl flex-shrink-0">
+          <div className="w-20 h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-2xl lg:rounded-3xl flex items-center justify-center text-3xl lg:text-4xl flex-shrink-0">
             {icon}
           </div>
-
+          
           {/* Content */}
           <div className="flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 mb-6">
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#0D0F16]">{title}</h3>
-              <span className="w-fit px-4 py-1.5 bg-[#1e4fc7]/10 border border-[#1e4fc7]/25 rounded-full text-sm font-['IBM_Plex_Mono'] text-[#1e4fc7] font-semibold">
+            <div className="flex flex-wrap items-center gap-3 lg:gap-5 mb-4 lg:mb-6">
+              <h3 className="text-2xl lg:text-3xl font-bold text-[#0D0F16]">{title}</h3>
+              <span className="px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/10 border border-[#1e4fc7]/25 rounded-full text-xs lg:text-sm font-['IBM_Plex_Mono'] text-[#1e4fc7] font-semibold">
                 Level {level}
               </span>
             </div>
-            <p className="text-base sm:text-lg text-[#3C414B] leading-relaxed">{description}</p>
+            <p className="text-base lg:text-lg text-[#3C414B] leading-relaxed">{description}</p>
           </div>
-
+          
           {/* Level Indicators */}
-          <div className="flex lg:flex-col gap-3">
+          <div className="flex sm:flex-col gap-3">
             {[1, 2, 3].map((tierLevel) => (
-              <div
+              <div 
                 key={tierLevel}
                 className={`w-3 h-3 rounded-full transition-all ${
                   level >= tierLevel ? 'bg-[#1e4fc7] sys-pulse' : 'bg-[#C4C8CE]'
@@ -525,10 +571,10 @@ function SecurityTab() {
       <section className="relative bg-gradient-to-b from-white to-[#FAFBFC] border-b border-[#C4C8CE]/40">
         <DataNodesSVG />
         <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-          <div className="inline-block px-4 py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-8 sm:mb-10 font-semibold">
+          <div className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-6 lg:mb-10 font-semibold">
             Trust Layer
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-tight">Security</h1>
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-tight">Security</h1>
           <p className="text-xl sm:text-2xl lg:text-3xl text-[#3C414B] max-w-4xl leading-relaxed">
             Infrastructure-level controls for data access and accountability
           </p>
@@ -537,20 +583,20 @@ function SecurityTab() {
 
       {/* Security Features */}
       <section className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {features.map((feature, idx) => (
             <div key={idx} className="group">
-              <div className="card-enterprise bg-white rounded-3xl p-8 sm:p-12 h-full relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#1e4fc7] via-[#1e4fc7]/60 to-transparent" />
-
-                <div className="w-20 h-20 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-3xl flex items-center justify-center text-4xl mb-8">
+              <div className="card-enterprise bg-white rounded-2xl lg:rounded-3xl p-8 lg:p-12 h-full relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1.5 lg:h-2 bg-gradient-to-r from-[#1e4fc7] via-[#1e4fc7]/60 to-transparent" />
+                
+                <div className="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-2xl lg:rounded-3xl flex items-center justify-center text-3xl lg:text-4xl mb-6 lg:mb-8">
                   {feature.icon}
                 </div>
-
-                <h3 className="text-2xl font-bold text-[#0D0F16] mb-5">{feature.title}</h3>
-                <p className="text-base text-[#3C414B] leading-relaxed">{feature.description}</p>
-
-                <div className="absolute bottom-6 right-6 w-3 h-3 bg-[#1e4fc7] rounded-full sys-pulse" />
+                
+                <h3 className="text-xl lg:text-2xl font-bold text-[#0D0F16] mb-4 lg:mb-5">{feature.title}</h3>
+                <p className="text-sm lg:text-base text-[#3C414B] leading-relaxed">{feature.description}</p>
+                
+                <div className="absolute bottom-6 right-6 w-2.5 h-2.5 lg:w-3 lg:h-3 bg-[#1e4fc7] rounded-full sys-pulse" />
               </div>
             </div>
           ))}
@@ -567,10 +613,10 @@ function AboutTab() {
       <section className="relative bg-gradient-to-b from-white to-[#FAFBFC] border-b border-[#C4C8CE]/40">
         <DataNodesSVG />
         <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-          <div className="inline-block px-4 py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-8 sm:mb-10 font-semibold">
+          <div className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-6 lg:mb-10 font-semibold">
             Company
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-tight">About</h1>
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-tight">About</h1>
           <p className="text-xl sm:text-2xl lg:text-3xl text-[#3C414B] max-w-4xl leading-relaxed">
             Independent operation of controlled data environments
           </p>
@@ -579,8 +625,8 @@ function AboutTab() {
 
       {/* About Content */}
       <section className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-        <div className="max-w-5xl mb-16 sm:mb-24">
-          <div className="space-y-8 text-base sm:text-xl text-[#3C414B] leading-relaxed">
+        <div className="max-w-5xl mb-16 lg:mb-24">
+          <div className="space-y-6 lg:space-y-8 text-lg sm:text-xl text-[#3C414B] leading-relaxed">
             <p>
               VerifiedMeasure is an independent operator of controlled data environments, with roots in validation, quality assurance, and governance of sensitive information systems.
             </p>
@@ -591,10 +637,10 @@ function AboutTab() {
         </div>
 
         {/* Our Approach */}
-        <div className="card-enterprise bg-white rounded-[3rem] p-10 sm:p-16">
-          <h2 className="text-3xl sm:text-5xl font-bold text-[#0D0F16] mb-12 sm:mb-20 tracking-tight text-center">Our Approach</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12">
+        <div className="card-enterprise bg-white rounded-3xl lg:rounded-[3rem] p-10 lg:p-16">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-12 lg:mb-20 tracking-tight text-center">Our Approach</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 lg:gap-12">
             {[
               {
                 icon: '⚙️',
@@ -613,11 +659,11 @@ function AboutTab() {
               }
             ].map((item, idx) => (
               <div key={idx} className="text-center group">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-8 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-3xl flex items-center justify-center text-5xl transition-transform group-hover:scale-110 duration-300">
+                <div className="w-24 h-24 lg:w-28 lg:h-28 mx-auto mb-6 lg:mb-8 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-2xl lg:rounded-3xl flex items-center justify-center text-4xl lg:text-5xl transition-transform group-hover:scale-110 duration-300">
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-[#0D0F16] mb-4">{item.title}</h3>
-                <p className="text-base text-[#3C414B] leading-relaxed">{item.desc}</p>
+                <h3 className="text-xl lg:text-2xl font-bold text-[#0D0F16] mb-3 lg:mb-4">{item.title}</h3>
+                <p className="text-sm lg:text-base text-[#3C414B] leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -634,10 +680,10 @@ function ContactTab() {
       <section className="relative bg-gradient-to-b from-white to-[#FAFBFC] border-b border-[#C4C8CE]/40">
         <DataNodesSVG />
         <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-          <div className="inline-block px-4 py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-8 sm:mb-10 font-semibold">
+          <div className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-[#1e4fc7]/8 border border-[#1e4fc7]/20 rounded-md text-[10px] lg:text-xs font-['IBM_Plex_Mono'] text-[#1e4fc7] uppercase tracking-[0.12em] mb-6 lg:mb-10 font-semibold">
             Get Started
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-[#0D0F16] mb-6 sm:mb-8 tracking-tight">Contact</h1>
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-[#0D0F16] mb-6 lg:mb-8 tracking-tight">Contact</h1>
           <p className="text-xl sm:text-2xl lg:text-3xl text-[#3C414B] max-w-4xl leading-relaxed">
             Inquiries from qualified teams
           </p>
@@ -646,14 +692,14 @@ function ContactTab() {
 
       {/* Contact Content */}
       <section className="relative max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
-        <div className="card-enterprise bg-white rounded-[3rem] p-10 sm:p-20 text-center">
-          <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-10 sm:mb-12 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-3xl flex items-center justify-center text-5xl">
+        <div className="card-enterprise bg-white rounded-3xl lg:rounded-[3rem] p-10 lg:p-20 text-center">
+          <div className="w-24 h-24 lg:w-28 lg:h-28 mx-auto mb-8 lg:mb-12 bg-gradient-to-br from-[#1e4fc7]/15 to-[#1e4fc7]/5 border border-[#1e4fc7]/30 rounded-2xl lg:rounded-3xl flex items-center justify-center text-4xl lg:text-5xl">
             ✉️
           </div>
-
-          <h2 className="text-3xl sm:text-5xl font-bold text-[#0D0F16] mb-10 sm:mb-12 tracking-tight">Get in Touch</h2>
-
-          <div className="space-y-6 text-base sm:text-lg text-[#3C414B] leading-relaxed mb-12 sm:mb-16 max-w-3xl mx-auto">
+          
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-8 lg:mb-12 tracking-tight">Get in Touch</h2>
+          
+          <div className="space-y-4 lg:space-y-6 text-base sm:text-lg text-[#3C414B] leading-relaxed mb-10 lg:mb-16 max-w-3xl mx-auto">
             <p>
               VerifiedMeasure works with teams operating or preparing data-driven workflows, including capital raises and proprietary dataset monetization.
             </p>
@@ -661,18 +707,18 @@ function ContactTab() {
               If your use case falls outside this scope, we may not be a fit.
             </p>
           </div>
-
+          
           <a
             href="mailto:contact@verifiedmeasure.com"
-            className="inline-flex items-center gap-4 px-8 sm:px-12 py-5 sm:py-6 bg-[#1e4fc7] text-white font-semibold text-lg sm:text-xl rounded-2xl hover:bg-[#1a45b3] transition-all shadow-xl shadow-[#1e4fc7]/20 hover:shadow-2xl hover:shadow-[#1e4fc7]/30"
+            className="inline-flex items-center gap-3 lg:gap-4 px-10 lg:px-12 py-5 lg:py-6 bg-[#1e4fc7] text-white font-semibold text-lg lg:text-xl rounded-xl lg:rounded-2xl hover:bg-[#1a45b3] transition-all shadow-xl shadow-[#1e4fc7]/20 hover:shadow-2xl hover:shadow-[#1e4fc7]/30"
           >
             <span>contact@verifiedmeasure.com</span>
-            <span className="text-2xl">→</span>
+            <span className="text-xl lg:text-2xl">→</span>
           </a>
         </div>
 
-        <div className="mt-12 sm:mt-16 text-center">
-          <p className="text-base text-[#3C414B]">
+        <div className="mt-10 lg:mt-16 text-center">
+          <p className="text-sm lg:text-base text-[#3C414B]">
             We typically respond to qualified inquiries within 1–2 business days.
           </p>
         </div>
