@@ -699,12 +699,9 @@ function ContactTab() {
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0D0F16] mb-8 lg:mb-12 tracking-tight">Get in Touch</h2>
           
-          <div className="space-y-4 lg:space-y-6 text-base sm:text-lg text-[#3C414B] leading-relaxed mb-10 lg:mb-16 max-w-3xl mx-auto">
+          <div className="text-base sm:text-lg text-[#3C414B] leading-relaxed mb-10 lg:mb-16 max-w-3xl mx-auto">
             <p>
               VerifiedMeasure works with teams operating or preparing data-driven workflows, including capital raises and proprietary dataset monetization.
-            </p>
-            <p>
-              If your use case falls outside this scope, we may not be a fit.
             </p>
           </div>
           
